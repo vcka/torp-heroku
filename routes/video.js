@@ -7,9 +7,11 @@ const superagent = require('superagent');
 let rimraf = require('rimraf');
 const formidable = require('formidable');
 const fs = require('fs');
-var windows1251 = require('windows-1251');
+var getSlug = require('speakingurl');
+var nameToImdb = require('name-to-imdb');
 let router = express.Router();
 
+// const protocol = 'https';
 //
 //	1.	When the server starts create a WebTorrent client
 //
@@ -68,7 +70,7 @@ client.on('download', function (bytes) {
 //	return 		<-	An array with a list of files
 //
 
-function getInfo(torrent, magnet, host) {
+function getInfo(torrent, magnet, host, protocol) {
 	return new Promise((resolve, reject) => {
 		torrent.files.forEach(function (data, index, array) {
 			let movieName;
@@ -80,12 +82,29 @@ function getInfo(torrent, magnet, host) {
 				movieName = data.name.slice(0, data.name.indexOf("2O")).replace(/\./g, ' ')
 			}
 
+			var slug;
+			slug = getSlug(movieName);
+
+			async function operation() {
+				return new Promise(function (resolve, reject) {
+					try {
+						nameToImdb({ name: slug }, function (err, res, inf) {
+							resolve(res);
+						})
+					} catch (e) {
+						console.log(e);
+					}
+				})
+			}
+
+
 			(async () => {
+				var imdbId = await operation();
 				try {
 					if (data.name.endsWith('avi') || data.name.endsWith('mp4') || data.name.endsWith('mkv')) {
 						const res = await superagent.get('www.omdbapi.com/')
 							.query({
-								t: movieName.trim().replace(/\s\s+/g, ' '),
+								i: imdbId,
 								plot: 'full',
 								apikey: '47427b38'
 							});
@@ -93,7 +112,7 @@ function getInfo(torrent, magnet, host) {
 							id: id++,
 							title: movieName.trim(),
 							originalTitle: data.name,
-							url: 'https://' + host + '/video/stream/' + magnet + '/' +  encodeURI(data.name),
+							url:  protocol + '://' + host + '/video/stream/' + magnet + '/' + encodeURI(data.name),
 							imgUrl: res.body.Poster,
 							length: res.body.Runtime,
 							hash: magnet,
@@ -136,15 +155,17 @@ router.get('/add/:magnet', function (req, res) {
 	//
 	//	2.	Add the magnet Hash to the client
 	//
+
+
+
 	client.add(magnet, function (torrent) {
 
 		//
 		//	->	Once we have all the data send it back to the browser to be
 		//		displayed.
 		//
-		console.log(req.get('path'));
 
-		getInfo(torrent, magnet, req.get('host')).then(() => {
+		getInfo(torrent, magnet, req.get('host'), getProtocol(req)).then(() => {
 			torrent.pause();
 			res.status(200);
 			res.json({ movies: files });
@@ -188,7 +209,7 @@ router.get('/stream/:magnet/:file_name', function (req, res, next) {
 	//	4.	Loop over all the files contained inside a Magnet Hash and find the one
 	//		the user selected.
 	//
-	console.log("Go \O/")
+	
 	for (i = 0; i < tor.files.length; i++) {
 		if (tor.files[i].name == decodeURI(req.params.file_name)) {
 			file = tor.files[i];
@@ -330,7 +351,7 @@ router.post('/upload', (req, res) => {
 				//		displayed.
 				//
 
-				getInfo(torrent, torrent.infoHash, req.get('host')).then(() => {
+				getInfo(torrent, torrent.infoHash, req.get('host'), getProtocol(req)).then(() => {
 					torrent.pause();
 					// res.status(200);
 					// res.json({ movies: files });
@@ -438,6 +459,12 @@ router.get('/delete/:hash', function (req, res, next) {
 		res.json({ movies: files });
 	});
 });
+
+function getProtocol (req) {
+	var proto = req.connection.encrypted ? 'https' : 'http';
+	proto = req.headers['x-forwarded-proto'] || proto;
+	return proto.split(/\s*,\s*/)[0];
+}
 
 module.exports = router;
 
