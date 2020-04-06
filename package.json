@@ -1,0 +1,33 @@
+{
+  "name": "how-to-stream-a-movie-using-nodejs",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": "8.11.3"
+  },
+  "scripts": {
+    "start": "nf start"
+  },
+  "dependencies": {
+    "body-parser": "1.15.1",
+    "cors": "^2.8.1",
+    "express": "4.13.4",
+    "formidable": "^1.2.2",
+    "fs": "0.0.1-security",
+    "hjs": "0.0.6",
+    "iconv": "^2.3.5",
+    "magnet-uri": "5.2.3",
+    "morgan": "1.7.0",
+    "movie-art": "2.0.0",
+    "multer": "^1.4.2",
+    "omdbapi": "^3.0.0",
+    "rimraf": "^3.0.2",
+    "superagent": "^5.2.2",
+    "webtorrent": "^0.98.0",
+    "windows-1251": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "1.11.0",
+    "foreman": "2.0.0"
+  }
+}
