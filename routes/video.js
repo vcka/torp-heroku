@@ -146,7 +146,7 @@ router.get('/add/:magnet', function (req, res) {
 
 	if (req.params.magnet === 'magnet:') {
 		magnet = parsed;
-		console.log("Got magnet link: " + parsed);
+		console.log("Got magnet link: " + parsed.dn);
 	} else {
 		magnet = req.params.magnet;
 		console.log("Got infoHash: " + magnet);
@@ -165,7 +165,7 @@ router.get('/add/:magnet', function (req, res) {
 		//		displayed.
 		//
 
-		getInfo(torrent, magnet.tr.infoHash, req.get('host'), getProtocol(req)).then(() => {
+		getInfo(torrent, magnet.infoHash, req.get('host'), getProtocol(req)).then(() => {
 			torrent.pause();
 			res.status(200);
 			res.json({ movies: files });
