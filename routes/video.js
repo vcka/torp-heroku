@@ -141,7 +141,7 @@ router.get('/add/:magnet', function (req, res) {
 	//
 	//let magnet = req.params.magnet;
 
-	let parsed = mg.decode(req.url.substring(5));
+	// let parsed = mg.decode(req.url.substring(5));
 	let magnet = req.params.magnet;
 
 	if (req.params.magnet === 'magnet:') {
