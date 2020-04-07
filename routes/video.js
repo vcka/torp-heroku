@@ -146,7 +146,7 @@ router.get('/add/:magnet', function (req, res) {
 
 	if (req.params.magnet === 'magnet:') {
 		// magnet = parsed.infoHash;
-		// console.log("Got magnet link: " + parsed.dn);
+		console.log("Got magnet link: " + magnet);
 	} else {
 		magnet = req.params.magnet;
 		console.log("Got infoHash: " + magnet);
