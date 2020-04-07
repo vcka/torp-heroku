@@ -165,7 +165,7 @@ router.get('/add/:magnet', function (req, res) {
 		//		displayed.
 		//
 
-		getInfo(torrent, magnet, req.get('host'), getProtocol(req)).then(() => {
+		getInfo(torrent, magnet.tr.infoHash, req.get('host'), getProtocol(req)).then(() => {
 			torrent.pause();
 			res.status(200);
 			res.json({ movies: files });
