@@ -82,6 +82,7 @@ function getInfo(torrent, magnet, host, protocol) {
 				movieName = data.name.slice(0, data.name.indexOf("2O")).replace(/\./g, ' ')
 			} else if (data.name.indexOf("199") !== -1) {
 				movieName = data.name.slice(0, data.name.indexOf("19")).replace(/\./g, ' ')
+			}
 
 			var slug;
 			slug = getSlug(movieName);
