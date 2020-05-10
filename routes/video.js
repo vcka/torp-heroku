@@ -80,7 +80,8 @@ function getInfo(torrent, magnet, host, protocol) {
 				movieName = data.name.slice(0, data.name.indexOf("(" | /\d{4}/) - 1).replace(/\./g, ' ')
 			} else if (data.name.indexOf("2O2") !== -1) {
 				movieName = data.name.slice(0, data.name.indexOf("2O")).replace(/\./g, ' ')
-			}
+			} else if (data.name.indexOf("199") !== -1) {
+				movieName = data.name.slice(0, data.name.indexOf("19")).replace(/\./g, ' ')
 
 			var slug;
 			slug = getSlug(movieName);
@@ -227,7 +228,7 @@ router.get('/stream/:magnet/:file_name', function (req, res, next) {
 	//
 	let range = req.headers.range;
 
-	console.log(range);
+	console.log("Requested range: ", range);
 
 	//
 	//	6.	Make sure the browser ask for a range to be sent.
