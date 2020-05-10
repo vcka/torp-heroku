@@ -80,7 +80,9 @@ function getInfo(torrent, magnet, host, protocol) {
 				movieName = data.name.slice(0, data.name.indexOf("(" | /\d{4}/) - 1).replace(/\./g, ' ')
 			} else if (data.name.indexOf("2O2") !== -1) {
 				movieName = data.name.slice(0, data.name.indexOf("2O")).replace(/\./g, ' ')
-			} else if (data.name.indexOf(/\d{3}/) !== -1) {
+			} else if (data.name.indexOf("199") !== -1) {
+				movieName = data.name.slice(0, data.name.indexOf("19")).replace(/\./g, ' ')
+			} else if (data.name.indexOf("198") !== -1) {
 				movieName = data.name.slice(0, data.name.indexOf("19")).replace(/\./g, ' ')
 			}
 
