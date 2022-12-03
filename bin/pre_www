@@ -1,6 +1,8 @@
 #!/bin/sh
 if [ "$NODE_ENV" = "development" ]; then
+npm install node-gyp
   nodemon ./bin/www
 else
+npm install node-gyp
   node ./bin/www
 fi
