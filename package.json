@@ -15,7 +15,7 @@
     "formidable": "^1.2.2",
     "fs": "0.0.1-security",
     "hjs": "0.0.6",
-    "iconv": "^2.3.5",
+    "iconv": "^3.0.0",
     "magnet-uri": "5.2.3",
     "morgan": "1.9.1",
     "movie-art": "2.0.0",
