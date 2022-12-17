@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": "9.9.0"
+    "node": "18.12.1"
   },
   "scripts": {
     "start": "nf start"
